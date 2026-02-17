@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\DTOs\Auth\Login\LoginRequestSchema;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {
