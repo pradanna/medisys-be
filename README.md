@@ -108,3 +108,9 @@ app/
     *   Ambil data hasil dari Service, lalu bungkus dengan **Resource** sebelum dikembalikan sebagai respons.
 
 8.  **Definisikan Rute (Routes)**: Daftarkan metode kontroler di `routes/api.php` untuk mengeksposnya sebagai titik akhir (endpoint) API.
+
+### Skema Database
+
+Untuk referensi struktur tabel dan relasi antar entitas dalam sistem ini, silakan merujuk pada diagram skema database melalui tautan berikut:
+
+[Lihat Skema Database Medisys](https://app.quickdatabasediagrams.com/#/d/OdGElk)
