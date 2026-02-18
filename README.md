@@ -1,59 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Struktur Proyek Backend Medisys
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyek ini mengikuti pola arsitektur berlapis untuk memastikan pemisahan masalah (separation of concerns) dan kemudahan pemeliharaan. Di bawah ini adalah panduan tentang cara menyusun kode saat membuat fitur baru, dari tingkat antarmuka hingga ke titik akhir (endpoint) API.
 
-## About Laravel
+### Gambaran Umum Arsitektur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Logika aplikasi dibagi menjadi beberapa lapisan (layer) berikut untuk memastikan kode yang bersih dan terstruktur:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1.  **Lapisan Kontroler (Controller Layer)**: Menerima permintaan HTTP dan mengembalikan respons. Ini adalah titik masuk dan keluar dari aplikasi.
+2.  **Lapisan Permintaan (Request Layer)**: Menangani validasi data yang masuk pada level Controller menggunakan `FormRequest`.
+3.  **Lapisan Sumber Daya (Resource Layer)**: Menangani transformasi data (model) menjadi format JSON yang akan dikirim sebagai respons.
+4.  **Lapisan Layanan (Service Layer)**: Berisi logika bisnis inti aplikasi. Controller akan mendelegasikan tugas ke lapisan ini.
+5.  **Lapisan Antarmuka / Repositori (Interface / Repository Layer)**: Menangani abstraksi untuk akses data, memisahkan logika bisnis dari cara data diambil atau disimpan.
+6.  **DTO (Data Transfer Object)**: Objek sederhana yang digunakan untuk membawa data antar lapisan, memastikan struktur data yang konsisten.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Struktur Direktori
 
-## Learning Laravel
+Berikut adalah struktur proyek yang merepresentasikan alur untuk sebuah fitur (contoh: `HospitalInstallation`):
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```
+app/
+├── DTOs/                                   # Objek Transfer Data
+│   └── HospitalInstallation/
+│       ├── HospitalInstallationQuerySchema.php
+│       └── HospitalInstallationRequestSchema.php
+├── Http/
+│   ├── Controllers/                        # Titik Akhir API
+│   │   └── MasterData/
+│   │       └── HospitalInstallationController.php
+│   ├── Requests/                           # Validasi Request
+│   │   └── HospitalInstallation/
+│   │       ├── StoreRequest.php
+│   │       └── UpdateRequest.php
+│   └── Resources/                          # Transformasi Response
+│       └── HospitalInstallationResource.php
+├── Interfaces/                             # Kontrak untuk Akses Data
+│   └── HospitalInstallationInterface.php
+├── Models/                                 # Model Eloquent
+│   └── HospitalInstallation.php
+├── Providers/                              # Service Provider (Binding DI)
+│   └── AppServiceProvider.php
+├── Repositories/                           # Implementasi Akses Data
+│   └── HospitalInstallationRepository.php
+├── Services/                               # Logika Bisnis
+│   └── MasterData/
+│       └── HospitalInstallationService.php
+└── Utils/                                  # Utilitas Bersama
+    └── Http/
+        └── APIResponse.php
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Alur Kerja: Membuat Layanan dari Antarmuka hingga Titik Akhir
 
-## Laravel Sponsors
+1.  **Definisikan Antarmuka (Interface)**: Buat sebuah antarmuka di `app/Interfaces` untuk mendefinisikan kontrak metode yang diperlukan untuk manipulasi data (misalnya, `find`, `findByID`, `create`, `update`).
+    *   Gunakan perintah Artisan untuk membuat antarmuka baru:
+        ```bash
+        php artisan make:interface HospitalInstallationInterface
+       
+2.  **Implementasikan Repositori (Repository)**: Buat kelas repositori di `app/Repositories` yang mengimplementasikan antarmuka tersebut.
+    *   Implementasikan setiap metode dari antarmuka menggunakan **Model Eloquent**.
+    *   Gunakan **DTO** (dari `app/DTOs`) sebagai parameter untuk memastikan struktur data yang masuk konsisten.
+    *   Gunakan perintah Artisan untuk membuat kelas repositori baru:
+        ```bash
+        php artisan make:class Repositories/HospitalInstallationRepository
+       
+3.  **Daftarkan Binding di AppServiceProvider**: Daftarkan binding antara **Antarmuka** dan **Repositori** di `app/Providers/AppServiceProvider.php` pada metode `register()`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+    Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran binding sebaiknya dilakukan di dalam `MasterDataServiceProvider`. Hal ini bertujuan untuk menjaga `AppServiceProvider` tetap bersih dan mengelompokkan ketergantungan berdasarkan konteks fiturnya.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
+    ```php
+    public function register(): void
+    {
+        // Hospital Installation
+        $this->app->bind(
+            \App\Interfaces\HospitalInstallationInterface::class,
+            \App\Repositories\HospitalInstallationRepository::class
+        );
+    }
+    ```
 
-## Contributing
+    Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4.  **Implementasikan Layanan (Service)**: Buat kelas layanan di `app/Services`.
+    *   Suntikkan (Inject) **Antarmuka** ke dalam konstruktor Layanan.
+    *   Implementasikan logika bisnis yang memanggil metode dari antarmuka/repositori.
+    *   Gunakan **DTO** (dari `app/DTOs`) untuk *type-hinting* dan menyusun struktur data yang sedang diproses.
+    *   Gunakan perintah Artisan untuk membuat kelas layanan baru:
+        ```bash
+        php artisan make:class Services/MasterData/HospitalInstallationService
+       
 
-## Code of Conduct
+5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk. Di layer ini berlaku juga untuk pembuatan query params, untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Request / Query, sedangkan untuk request ataupun query dari FrontEnd pastikan request / query menggunakan format snake case, dan untuk variable internal menggunakan camelcase.
+    *   Gunakan perintah Artisan untuk membuat kelas Form Request baru:
+        ```bash
+        php artisan make:request HospitalInstallation/HospitalInstallationRequest
+   
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons. Untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Resource, sedangkan untuk response ke FrontEnd pastikan response menggunakan format snake case.
+    *   Gunakan perintah Artisan untuk membuat kelas Resource baru:
+        ```bash
+        php artisan make:resource HospitalInstallation/HospitalInstallationResource
 
-## Security Vulnerabilities
+7.  **Buat Kontroler (Controller)**: Buat sebuah kontroler di `app/Http/Controllers`.
+    *   Suntikkan (Inject) **Layanan (Service)** ke dalam konstruktor Kontroler.
+    *   Definisikan metode (titik akhir) yang memanggil metode dari layanan. Gunakan *type-hint* pada **FormRequest** untuk validasi otomatis.
+    *   Ambil data hasil dari Service, lalu bungkus dengan **Resource** sebelum dikembalikan sebagai respons.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8.  **Definisikan Rute (Routes)**: Daftarkan metode kontroler di `routes/api.php` untuk mengeksposnya sebagai titik akhir (endpoint) API.
 
-## License
+### Skema Database
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Untuk referensi struktur tabel dan relasi antar entitas dalam sistem ini, silakan merujuk pada diagram skema database melalui tautan berikut:
+
+[Lihat Skema Database Medisys](https://app.quickdatabasediagrams.com/#/d/OdGElk)
