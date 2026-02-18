@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
                     'username' => $datum['username'],
                     'password' => $datum['password'],
                     'email_verified_at' => '2026-01-01 00:00:00',
+                    'is_active' => $datum['is_active']
                 ];
                 $user = User::updateOrCreate(
                     ['id' => $dataUser['id']],
