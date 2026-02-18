@@ -12,4 +12,5 @@ interface HospitalInstallationInterface
     public function find(HospitalInstallationQuerySchema $filters): PaginateResponse;
     public function findByID(string $id): ?HospitalInstallation;
     public function create(HospitalInstallationRequestSchema $schema): ?HospitalInstallation;
+    public function update(string $id, HospitalInstallationRequestSchema $schema): ?HospitalInstallation;
 }
