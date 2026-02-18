@@ -66,21 +66,21 @@ app/
 3.  **Daftarkan Binding di AppServiceProvider**: Daftarkan binding antara **Antarmuka** dan **Repositori** di `app/Providers/AppServiceProvider.php` pada metode `register()`.
 
 
-Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran binding sebaiknya dilakukan di dalam `MasterDataServiceProvider`. Hal ini bertujuan untuk menjaga `AppServiceProvider` tetap bersih dan mengelompokkan ketergantungan berdasarkan konteks fiturnya.
+    Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran binding sebaiknya dilakukan di dalam `MasterDataServiceProvider`. Hal ini bertujuan untuk menjaga `AppServiceProvider` tetap bersih dan mengelompokkan ketergantungan berdasarkan konteks fiturnya.
 
-Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
-```php
-public function register(): void
-{
-    // Hospital Installation
-    $this->app->bind(
-        \App\Interfaces\HospitalInstallationInterface::class,
-        \App\Repositories\HospitalInstallationRepository::class
-    );
-}
+    Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
+    ```php
+    public function register(): void
+    {
+        // Hospital Installation
+        $this->app->bind(
+            \App\Interfaces\HospitalInstallationInterface::class,
+            \App\Repositories\HospitalInstallationRepository::class
+        );
+    }
 ```
 
-Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
+    Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
 4.  **Implementasikan Layanan (Service)**: Buat kelas layanan di `app/Services`.
     *   Suntikkan (Inject) **Antarmuka** ke dalam konstruktor Layanan.
