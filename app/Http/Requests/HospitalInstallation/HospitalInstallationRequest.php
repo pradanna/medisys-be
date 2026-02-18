@@ -22,8 +22,10 @@ class HospitalInstallationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
-            'code' => 'string|required|max:20|unique:hospital_installations,code',
+            'code' => 'string|required|max:20|unique:hospital_installations,code,' . $id,
             'name' => 'string|required',
             'is_active' => 'boolean|required'
         ];

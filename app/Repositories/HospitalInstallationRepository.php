@@ -43,6 +43,24 @@ class HospitalInstallationRepository implements HospitalInstallationInterface
 
     public function create(HospitalInstallationRequestSchema $schema): ?HospitalInstallation
     {
-        throw new \Exception('Not implemented');
+        return HospitalInstallation::create([
+            'code' => $schema->code,
+            'name' => $schema->name,
+            'is_active' => $schema->isActive,
+        ]);
+    }
+
+    public function update(string $id, HospitalInstallationRequestSchema $schema): ?HospitalInstallation
+    {
+        $hospitalInstallation = $this->findByID($id);
+        if (!$hospitalInstallation) {
+            return null;
+        }
+        $hospitalInstallation->update([
+            'code' => $schema->code,
+            'name' => $schema->name,
+            'is_active' => $schema->isActive,
+        ]);
+        return $hospitalInstallation;
     }
 }

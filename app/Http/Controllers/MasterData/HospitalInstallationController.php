@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HospitalInstallation\HospitalInstallationQuery;
+use App\Http\Requests\HospitalInstallation\HospitalInstallationRequest;
 use App\Http\Resources\HospitalInstallation\HospitalInstallationResource;
 use App\Services\MasterData\HospitalInstallationService;
 use App\Utils\Http\APIResponse;
@@ -28,6 +29,28 @@ class HospitalInstallationController extends Controller
         return APIResponse::success(
             new HospitalInstallationResource($hospitalInstallation),
             "successfully get hospital installation",
+            200
+        );
+    }
+
+    public function store(HospitalInstallationRequest $request)
+    {
+        $schema = $request->toSchema();
+        $hospitalInstallation = $this->service->create($schema);
+        return APIResponse::success(
+            new HospitalInstallationResource($hospitalInstallation),
+            "successfully created hospital installation",
+            201
+        );
+    }
+
+    public function update(HospitalInstallationRequest $request, $id)
+    {
+        $schema = $request->toSchema();
+        $hospitalInstallation = $this->service->update($id, $schema);
+        return APIResponse::success(
+            new HospitalInstallationResource($hospitalInstallation),
+            "successfully updated hospital installation",
             200
         );
     }

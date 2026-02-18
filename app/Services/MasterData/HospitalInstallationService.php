@@ -36,4 +36,11 @@ class HospitalInstallationService
     {
         return $this->repository->create($schema);
     }
+
+    public function update(string $id, HospitalInstallationRequestSchema $schema): HospitalInstallation
+    {
+        $this->findByID($id);
+        $hospitalInstallation = $this->repository->update($id, $schema);
+        return $hospitalInstallation;
+    }
 }
