@@ -78,7 +78,7 @@ app/
             \App\Repositories\HospitalInstallationRepository::class
         );
     }
-```
+    ```
 
     Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
