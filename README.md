@@ -86,10 +86,21 @@ app/
     *   Suntikkan (Inject) **Antarmuka** ke dalam konstruktor Layanan.
     *   Implementasikan logika bisnis yang memanggil metode dari antarmuka/repositori.
     *   Gunakan **DTO** (dari `app/DTOs`) untuk *type-hinting* dan menyusun struktur data yang sedang diproses.
+    *   Gunakan perintah Artisan untuk membuat kelas layanan baru:
+        ```bash
+        php artisan make:class Services/MasterData/HospitalInstallationService
+       
 
-5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk.
+5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk. Di layer ini berlaku juga untuk pembuatan query params, untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Request / Query.
+    *   Gunakan perintah Artisan untuk membuat kelas Form Request baru:
+        ```bash
+        php artisan make:request HospitalInstallation/HospitalInstallationRequest
+   
 
-6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons.
+6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons. Untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Resource.
+    *   Gunakan perintah Artisan untuk membuat kelas Resource baru:
+        ```bash
+        php artisan make:resource HospitalInstallation/HospitalInstallationResource
 
 7.  **Buat Kontroler (Controller)**: Buat sebuah kontroler di `app/Http/Controllers`.
     *   Suntikkan (Inject) **Layanan (Service)** ke dalam konstruktor Kontroler.
