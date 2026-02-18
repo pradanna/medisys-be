@@ -52,15 +52,36 @@ app/
 ### Alur Kerja: Membuat Layanan dari Antarmuka hingga Titik Akhir
 
 1.  **Definisikan Antarmuka (Interface)**: Buat sebuah antarmuka di `app/Interfaces` untuk mendefinisikan kontrak metode yang diperlukan untuk manipulasi data (misalnya, `find`, `findByID`, `create`, `update`).
-
+    *   Gunakan perintah Artisan untuk membuat antarmuka baru:
+        ```bash
+        php artisan make:interface HospitalInstallationInterface
+       
 2.  **Implementasikan Repositori (Repository)**: Buat kelas repositori di `app/Repositories` yang mengimplementasikan antarmuka tersebut.
     *   Implementasikan setiap metode dari antarmuka menggunakan **Model Eloquent**.
     *   Gunakan **DTO** (dari `app/DTOs`) sebagai parameter untuk memastikan struktur data yang masuk konsisten.
-
+    *   Gunakan perintah Artisan untuk membuat kelas repositori baru:
+        ```bash
+        php artisan make:class Repositories/HospitalInstallationRepository
+       
 3.  **Daftarkan Binding di AppServiceProvider**: Daftarkan binding antara **Antarmuka** dan **Repositori** di `app/Providers/AppServiceProvider.php` pada metode `register()`.
-    ```php
+    ```php    // Master Data Bindings
     $this->app->bind(HospitalInstallationInterface::class, HospitalInstallationRepository::class);
-    ```
+```
+
+    Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran binding sebaiknya dilakukan di dalam `MasterDataServiceProvider`. Hal ini bertujuan untuk menjaga `AppServiceProvider` tetap bersih dan mengelompokkan ketergantungan berdasarkan konteks fiturnya.
+
+    Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
+
+    ```php
+    public function register(): void
+    {
+        // Hospital Installation
+        $this->app->bind(
+            \App\Interfaces\HospitalInstallationInterface::class,
+            \App\Repositories\HospitalInstallationRepository::class
+        );
+    }
+```
     Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis — ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
 4.  **Implementasikan Layanan (Service)**: Buat kelas layanan di `app/Services`.
