@@ -1,0 +1,26 @@
+[
+    {
+        "id": "b367a763-a86f-41b4-b9b7-12c1c0edfde1",
+        "code": "RJ",
+        "name": "Instalasi Rawat Jalan",
+        "is_active": true
+    },
+    {
+        "id": "2690a798-c0a6-4be8-a84e-ca5f2f403fe9",
+        "code": "RI",
+        "name": "Instalasi Rawat Inap",
+        "is_active": true
+    },
+    {
+        "id": "338fefbc-b411-4339-ac85-6d58874b8033",
+        "code": "IGD",
+        "name": "Instalasi Gawat Darurat",
+        "is_active": true
+    },
+    {
+        "id": "b9e5762c-ca63-4a9f-969e-d2d355e74494",
+        "code": "FAR",
+        "name": "Farmasi",
+        "is_active": true
+    }
+]

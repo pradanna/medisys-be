@@ -4,6 +4,7 @@ namespace App\Services\MasterData;
 
 use App\DTOs\HospitalInstallation\HospitalInstallationQuerySchema;
 use App\DTOs\HospitalInstallation\HospitalInstallationRequestSchema;
+use App\Exceptions\DomainException;
 use App\Interfaces\HospitalInstallationInterface;
 use App\Models\HospitalInstallation;
 use App\Utils\Pagination\PaginateResponse;
@@ -22,9 +23,13 @@ class HospitalInstallationService
         return $this->repository->find($filters);
     }
 
-    public function findByID(string $id): ?HospitalInstallation
+    public function findByID(string $id): HospitalInstallation
     {
-        return $this->repository->findByID($id);
+        $hospitalInstallation = $this->repository->findByID($id);
+        if (!$hospitalInstallation) {
+            throw new DomainException("hospital installation not found", 404);
+        }
+        return $hospitalInstallation;
     }
 
     public function create(HospitalInstallationRequestSchema $schema): ?HospitalInstallation

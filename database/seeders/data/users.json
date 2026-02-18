@@ -4,6 +4,7 @@
         "email": "developer@dev.id",
         "username": "developer",
         "password": "$2y$12$WvVbpcfoZz0WLjhtBhn7AeyswNjPlKR1NUWQG8Po8NzYIt3jsv4T6",
-        "roles": ["developer"]
+        "roles": ["developer"],
+        "is_active": true
     }
 ]

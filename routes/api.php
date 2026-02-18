@@ -14,6 +14,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => [JWTVerify::class]], function () {
         Route::group(['prefix' => 'hospital-installation'], function () {
             Route::get('/', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'find']);
+            Route::get('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'findByID']);
         });
     });
 });
