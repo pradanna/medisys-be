@@ -72,16 +72,15 @@ Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran bi
 
 Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
 
-    ```php
-        public function register(): void
-        {
-            // Hospital Installation
-            $this->app->bind(
-                \App\Interfaces\HospitalInstallationInterface::class,
-                \App\Repositories\HospitalInstallationRepository::class
-            );
-        }
-    ```
+```php
+public function register(): void
+{
+    // Hospital Installation
+    $this->app->bind(
+        \App\Interfaces\HospitalInstallationInterface::class,
+        \App\Repositories\HospitalInstallationRepository::class
+    );
+}
 
 Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
