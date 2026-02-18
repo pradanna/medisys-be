@@ -91,13 +91,13 @@ app/
         php artisan make:class Services/MasterData/HospitalInstallationService
        
 
-5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk. Di layer ini berlaku juga untuk pembuatan query params, untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Request / Query.
+5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk. Di layer ini berlaku juga untuk pembuatan query params, untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Request / Query, sedangkan untuk request ataupun query dari FrontEnd pastikan request / query menggunakan format snake case, dan untuk variable internal menggunakan camelcase.
     *   Gunakan perintah Artisan untuk membuat kelas Form Request baru:
         ```bash
         php artisan make:request HospitalInstallation/HospitalInstallationRequest
    
 
-6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons. Untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Resource.
+6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons. Untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Resource, sedangkan untuk response ke FrontEnd pastikan response menggunakan format snake case.
     *   Gunakan perintah Artisan untuk membuat kelas Resource baru:
         ```bash
         php artisan make:resource HospitalInstallation/HospitalInstallationResource
