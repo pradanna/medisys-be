@@ -49,7 +49,50 @@ app/
         └── APIResponse.php
 ```
 
+### Konvensi Penamaan Branch
+
+Dalam melakukan pengembangan fitur, perbaikan bug, atau pembersihan kode, pastikan penamaan branch mengikuti konvensi berikut:
+
+-   **`feat/`**: Digunakan untuk penambahan fitur baru (contoh: `feat/hospital-installation`).
+-   **`fix/`**: Digunakan untuk perbaikan bug atau kesalahan pada kode (contoh: `fix/validation-error-on-store`).
+-   **`refactor/`**: Digunakan untuk perubahan kode yang tidak mengubah fungsionalitas (contoh: `refactor/cleanup-repository-logic`).
+
+Format penamaan branch: `[tipe]/[deskripsi-singkat-fitur]` (menggunakan kebab-case).
+
+-   **Prosedur Pembuatan Branch**: Setiap pembuatan branch baru **WAJIB** dilakukan dari branch `development`. Sebelum membuat branch baru, pastikan Anda telah melakukan `git pull origin development` untuk mendapatkan versi kode terbaru.
+
+    Contoh perintah:
+    ```bash
+    git checkout development
+    git pull origin development
+    git checkout -b feat/nama-fitur
+   
+
+### Peringatan Penting: Larangan Push ke Branch Utama
+
+> [!CAUTION]
+> **DILARANG KERAS** untuk melakukan commit atau push kode secara langsung ke branch **`main`**, **`staging`**, atau **`development`**.
+>
+> Semua pengerjaan fitur, perbaikan bug, atau refaktorisasi harus dilakukan melalui branch fitur baru yang dibuat dari branch `development`. Setelah selesai, ajukan **Pull Request (PR)** untuk proses peninjauan kode (code review).
+
+### Konvensi Pesan Commit
+
+Untuk menjaga riwayat repositori tetap bersih dan mudah dibaca, gunakan standar **Conventional Commits**:
+
+-   **`feat:`**: Digunakan untuk penambahan fitur baru (contoh: `feat: add hospital installation module`).
+-   **`fix:`**: Digunakan untuk perbaikan bug (contoh: `fix: resolve validation error on store`).
+-   **`docs:`**: Digunakan untuk perubahan dokumentasi (contoh: `docs: update readme with commit guidelines`).
+-   **`style:`**: Digunakan untuk perubahan yang tidak mempengaruhi makna kode (white-space, formatting, missing semi-colons, dll).
+-   **`refactor:`**: Digunakan untuk perubahan kode yang bukan perbaikan bug maupun penambahan fitur.
+-   **`perf:`**: Digunakan untuk perubahan kode yang meningkatkan performa.
+-   **`test:`**: Digunakan untuk menambah atau memperbaiki tes yang sudah ada.
+-   **`chore:`**: Digunakan untuk perubahan pada proses build atau alat bantu seperti generator library.
+
+Format pesan commit: `[tipe]: [deskripsi singkat]` (menggunakan huruf kecil).
+---
+
 ### Alur Kerja: Membuat Layanan dari Antarmuka hingga Titik Akhir
+
 
 1.  **Definisikan Antarmuka (Interface)**: Buat sebuah antarmuka di `app/Interfaces` untuk mendefinisikan kontrak metode yang diperlukan untuk manipulasi data (misalnya, `find`, `findByID`, `create`, `update`).
     *   Gunakan perintah Artisan untuk membuat antarmuka baru:
