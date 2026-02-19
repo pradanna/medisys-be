@@ -52,25 +52,55 @@ app/
 ### Alur Kerja: Membuat Layanan dari Antarmuka hingga Titik Akhir
 
 1.  **Definisikan Antarmuka (Interface)**: Buat sebuah antarmuka di `app/Interfaces` untuk mendefinisikan kontrak metode yang diperlukan untuk manipulasi data (misalnya, `find`, `findByID`, `create`, `update`).
-
+    *   Gunakan perintah Artisan untuk membuat antarmuka baru:
+        ```bash
+        php artisan make:interface HospitalInstallationInterface
+       
 2.  **Implementasikan Repositori (Repository)**: Buat kelas repositori di `app/Repositories` yang mengimplementasikan antarmuka tersebut.
     *   Implementasikan setiap metode dari antarmuka menggunakan **Model Eloquent**.
     *   Gunakan **DTO** (dari `app/DTOs`) sebagai parameter untuk memastikan struktur data yang masuk konsisten.
-
+    *   Gunakan perintah Artisan untuk membuat kelas repositori baru:
+        ```bash
+        php artisan make:class Repositories/HospitalInstallationRepository
+       
 3.  **Daftarkan Binding di AppServiceProvider**: Daftarkan binding antara **Antarmuka** dan **Repositori** di `app/Providers/AppServiceProvider.php` pada metode `register()`.
+
+
+    Jika fitur tersebut termasuk dalam kategori **Master Data**, maka pendaftaran binding sebaiknya dilakukan di dalam `MasterDataServiceProvider`. Hal ini bertujuan untuk menjaga `AppServiceProvider` tetap bersih dan mengelompokkan ketergantungan berdasarkan konteks fiturnya.
+
+    Contoh penempatan pada `app/Providers/MasterDataServiceProvider.php`:
     ```php
-    $this->app->bind(HospitalInstallationInterface::class, HospitalInstallationRepository::class);
+    public function register(): void
+    {
+        // Hospital Installation
+        $this->app->bind(
+            \App\Interfaces\HospitalInstallationInterface::class,
+            \App\Repositories\HospitalInstallationRepository::class
+        );
+    }
     ```
-    Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis — ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
+
+    Langkah ini memungkinkan Laravel melakukan *dependency injection* secara otomatis —     ketika sebuah kelas membutuhkan `HospitalInstallationInterface`, Laravel akan menyuntikkan `HospitalInstallationRepository`.
 
 4.  **Implementasikan Layanan (Service)**: Buat kelas layanan di `app/Services`.
     *   Suntikkan (Inject) **Antarmuka** ke dalam konstruktor Layanan.
     *   Implementasikan logika bisnis yang memanggil metode dari antarmuka/repositori.
     *   Gunakan **DTO** (dari `app/DTOs`) untuk *type-hinting* dan menyusun struktur data yang sedang diproses.
+    *   Gunakan perintah Artisan untuk membuat kelas layanan baru:
+        ```bash
+        php artisan make:class Services/MasterData/HospitalInstallationService
+       
 
-5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk.
+5.  **Buat Form Request**: Buat kelas `FormRequest` di `app/Http/Requests` untuk mendefinisikan aturan validasi untuk data yang masuk. Di layer ini berlaku juga untuk pembuatan query params, untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Request / Query, sedangkan untuk request ataupun query dari FrontEnd pastikan request / query menggunakan format snake case, dan untuk variable internal menggunakan camelcase.
+    *   Gunakan perintah Artisan untuk membuat kelas Form Request baru:
+        ```bash
+        php artisan make:request HospitalInstallation/HospitalInstallationRequest
+   
 
-6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons.
+6.  **Buat Resource**: Buat kelas `JsonResource` di `app/Http/Resources` untuk mentransformasi model Eloquent menjadi struktur JSON yang akan dikembalikan sebagai respons. Untuk pemberian nama file pastikan menggunakan format PascalCase dengan suffix Resource, sedangkan untuk response ke FrontEnd pastikan response menggunakan format snake case.
+    *   Gunakan perintah Artisan untuk membuat kelas Resource baru:
+        ```bash
+        php artisan make:resource HospitalInstallation/HospitalInstallationResource
 
 7.  **Buat Kontroler (Controller)**: Buat sebuah kontroler di `app/Http/Controllers`.
     *   Suntikkan (Inject) **Layanan (Service)** ke dalam konstruktor Kontroler.
@@ -78,3 +108,9 @@ app/
     *   Ambil data hasil dari Service, lalu bungkus dengan **Resource** sebelum dikembalikan sebagai respons.
 
 8.  **Definisikan Rute (Routes)**: Daftarkan metode kontroler di `routes/api.php` untuk mengeksposnya sebagai titik akhir (endpoint) API.
+
+### Skema Database
+
+Untuk referensi struktur tabel dan relasi antar entitas dalam sistem ini, silakan merujuk pada diagram skema database melalui tautan berikut:
+
+[Lihat Skema Database Medisys](https://app.quickdatabasediagrams.com/#/d/OdGElk)
