@@ -39,8 +39,16 @@ class HospitalInstallationService
 
     public function update(string $id, HospitalInstallationRequestSchema $schema): HospitalInstallation
     {
-        $this->findByID($id);
+        $hospitalInstallation = $this->repository->findByID($id);
+        if (!$hospitalInstallation) {
+            throw new DomainException("hospital installation not found", 404);
+        }
         $hospitalInstallation = $this->repository->update($id, $schema);
         return $hospitalInstallation;
+    }
+
+    public function delete(string $id): void
+    {
+        $this->repository->delete($id);
     }
 }

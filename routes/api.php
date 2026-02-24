@@ -15,8 +15,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'hospital-installation'], function () {
             Route::get('/', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'find']);
             Route::get('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'findByID']);
-            Route::post('/', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'store']);
+            Route::post('/', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'create']);
             Route::put('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'update']);
+            Route::delete('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'delete']);
         });
     });
 });
