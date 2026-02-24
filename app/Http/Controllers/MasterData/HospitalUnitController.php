@@ -8,7 +8,6 @@ use App\Http\Requests\HospitalUnit\HospitalUnitRequest;
 use App\Http\Resources\HospitalUnit\HospitalUnitResource;
 use App\Services\MasterData\HospitalUnitService;
 use App\Utils\Http\APIResponse;
-use Illuminate\Http\Request;
 
 class HospitalUnitController extends Controller
 {
