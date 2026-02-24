@@ -3,7 +3,9 @@
 namespace App\Http\Requests\HospitalUnit;
 
 use App\DTOs\HospitalUnit\HospitalUnitRequestSchema;
+use App\Enums\HospitalUnitType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class HospitalUnitRequest extends FormRequest
 {
@@ -28,6 +30,11 @@ class HospitalUnitRequest extends FormRequest
             'code' => 'string|required|max:20|unique:hospital_units,code,' . $id,
             'hospital_installation_id' => 'string|required|uuid',
             'name' => 'string|required',
+            'type' => [
+                'string',
+                'required',
+                new Enum(HospitalUnitType::class)
+            ],
             'is_active' => 'boolean|required'
         ];
     }
@@ -38,6 +45,7 @@ class HospitalUnitRequest extends FormRequest
             code: $this->validated('code'),
             hospitalInstallationId: $this->validated('hospital_installation_id'),
             name: $this->validated('name'),
+            type: $this->validated('type'),
             isActive: $this->validated('is_active')
         );
     }

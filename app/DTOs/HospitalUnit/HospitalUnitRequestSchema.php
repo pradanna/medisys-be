@@ -11,6 +11,7 @@ class HospitalUnitRequestSchema
         public string $code,
         public string $hospitalInstallationId,
         public string $name,
+        public string $type,
         public bool $isActive
     ) {}
 }

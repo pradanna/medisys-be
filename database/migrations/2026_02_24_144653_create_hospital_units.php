@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('hospital_installation_id')->nullable();
             $table->string('code', 20)->unique()->nullable();
             $table->string('name');
+            $table->string('type');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

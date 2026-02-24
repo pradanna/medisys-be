@@ -53,6 +53,7 @@ class HospitalUnitRepository implements HospitalUnitInterface
             'code' => $schema->code,
             'hospital_installation_id' => $schema->hospitalInstallationId,
             'name' => $schema->name,
+            'type' => $schema->type,
             'is_active' => $schema->isActive,
         ]);
     }
@@ -67,6 +68,7 @@ class HospitalUnitRepository implements HospitalUnitInterface
             'code' => $schema->code,
             'hospital_installation_id' => $schema->hospitalInstallationId,
             'name' => $schema->name,
+            'type' => $schema->type,
             'is_active' => $schema->isActive,
         ]);
         return $hospitalUnit;

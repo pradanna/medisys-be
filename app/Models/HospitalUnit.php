@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\HospitalUnitType;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HospitalUnit extends Model
 {
-     use HasFactory, Uuid, SoftDeletes;
+    use HasFactory, Uuid, SoftDeletes;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -18,11 +19,13 @@ class HospitalUnit extends Model
         'code',
         'hospital_installation_id',
         'name',
+        'type',
         'is_active'
     ];
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'type' => HospitalUnitType::class
     ];
 
     public function hospital_installation()
