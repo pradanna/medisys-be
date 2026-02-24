@@ -8,6 +8,7 @@ Route::group(['prefix' => 'v1'], function () {
     # Auth Route
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login']);
+        Route::post('/refresh', [App\Http\Controllers\Auth\AuthController::class, 'refreshToken']);
     });
 
     Route::group(['middleware' => [JWTVerify::class]], function () {

@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use App\DTOs\Auth\Login\LoginRequestSchema;
 use App\DTOs\Auth\Login\LoginResponseSchema;
+use App\DTOs\Auth\RefreshToken\RefreshTokenResponseSchema;
 use App\Exceptions\DomainException;
 use App\Interfaces\UserInterface;
 use App\Utils\JWT\JWTAuth;
@@ -50,6 +51,34 @@ class AuthService
         return new LoginResponseSchema(
             accessToken: JWTAuth::encode($jwtClaims),
             refreshToken: JWTAuth::encodeRefreshToken($user->email),
+        );
+    }
+
+    public function refreshToken(string $refreshToken): RefreshTokenResponseSchema
+    {
+        $email = JWTAuth::decodeRefreshToken($refreshToken);
+        $user = $this->repository->findByEmail($email);
+        if (!$user) {
+            throw new DomainException("pengguna tidak ditemukan", 404);
+        }
+
+        $roles = $user->getRoleNames()->toArray();
+        $permissions = $user->getAllPermissions()
+            ->pluck('name')
+            ->unique()
+            ->values()
+            ->toArray();
+
+        $jwtClaims = new JWTClaims(
+            id: $user->id,
+            email: $user->email,
+            username: $user->username,
+            roles: $roles,
+            permissions: $permissions
+        );
+
+        return new RefreshTokenResponseSchema(
+            accessToken: JWTAuth::encode($jwtClaims)
         );
     }
 }

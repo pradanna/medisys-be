@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Auth\Login;
+namespace App\Http\Resources\Auth\RefreshToken;
 
-use App\DTOs\Auth\Login\LoginResponseSchema;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class RefreshTokenResource extends JsonResource
 {
-    /** @var LoginResponseSchema $resource */
-    public $resource;
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +15,7 @@ class LoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'access_token' => $this->resource->accessToken
+            'access_token' => $this->accessToken,
         ];
     }
 }
