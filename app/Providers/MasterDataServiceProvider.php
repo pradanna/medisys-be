@@ -9,6 +9,7 @@ class MasterDataServiceProvider extends ServiceProvider
     protected array $repositoryBindings = [
         \App\Interfaces\UserInterface::class => \App\Repositories\UserRepository::class,
         \App\Interfaces\HospitalInstallationInterface::class => \App\Repositories\HospitalInstallationRepository::class,
+        \App\Interfaces\HospitalUnitInterface::class => \App\Repositories\HospitalUnitRepository::class,
     ];
     /**
      * Register services.

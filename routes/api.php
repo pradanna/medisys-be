@@ -19,5 +19,12 @@ Route::group(['prefix' => 'v1'], function () {
             Route::put('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'update']);
             Route::delete('/{id}', [App\Http\Controllers\MasterData\HospitalInstallationController::class, 'delete']);
         });
+        Route::group(['prefix' => 'hospital-unit'], function () {
+            Route::get('/', [App\Http\Controllers\MasterData\HospitalUnitController::class, 'find']);
+            Route::get('/{id}', [App\Http\Controllers\MasterData\HospitalUnitController::class, 'findByID']);
+            Route::post('/', [App\Http\Controllers\MasterData\HospitalUnitController::class, 'create']);
+            Route::put('/{id}', [App\Http\Controllers\MasterData\HospitalUnitController::class, 'update']);
+            Route::delete('/{id}', [App\Http\Controllers\MasterData\HospitalUnitController::class, 'delete']);
+        });
     });
 });
