@@ -33,12 +33,14 @@ class HospitalInstallationController extends Controller
         );
     }
 
-    public function store(HospitalInstallationRequest $request)
+    public function create(HospitalInstallationRequest $request)
     {
         $schema = $request->toSchema();
         $hospitalInstallation = $this->service->create($schema);
         return APIResponse::success(
-            new HospitalInstallationResource($hospitalInstallation),
+            [
+                'id' => $hospitalInstallation->id,
+            ],
             "successfully created hospital installation",
             201
         );
@@ -47,10 +49,20 @@ class HospitalInstallationController extends Controller
     public function update(HospitalInstallationRequest $request, $id)
     {
         $schema = $request->toSchema();
-        $hospitalInstallation = $this->service->update($id, $schema);
+        $this->service->update($id, $schema);
         return APIResponse::success(
-            new HospitalInstallationResource($hospitalInstallation),
+            null,
             "successfully updated hospital installation",
+            200
+        );
+    }
+
+    public function delete($id)
+    {
+        $this->service->delete($id);
+        return APIResponse::success(
+            null,
+            "successfully deleted hospital installation",
             200
         );
     }

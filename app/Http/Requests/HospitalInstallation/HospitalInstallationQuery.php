@@ -32,11 +32,24 @@ class HospitalInstallationQuery extends FormRequest
         ];
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->filled('is_active')) {
+            $this->merge([
+                'is_active' => $this->boolean('is_active'),
+            ]);
+        } else {
+            $this->merge([
+                'is_active' => null,
+            ]);
+        }
+    }
+
     public function toFilter(): HospitalInstallationQuerySchema
     {
         return new HospitalInstallationQuerySchema(
             search: $this->search,
-            isActive: $this->has('is_active') ? $this->boolean('is_active') : null,
+            isActive: $this->is_active,
             page: (int) ($this->page ?? 1),
             perPage: (int) ($this->per_page ?? 15),
             sortBy: $this->sort_by ?? 'created_at',

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DTOs\HospitalInstallation\HospitalInstallationQuerySchema;
 use App\DTOs\HospitalInstallation\HospitalInstallationRequestSchema;
+use App\Exceptions\DomainException;
 use App\Interfaces\HospitalInstallationInterface;
 use App\Models\HospitalInstallation;
 use App\Utils\Pagination\PaginateResponse;
@@ -38,6 +39,7 @@ class HospitalInstallationRepository implements HospitalInstallationInterface
     {
         return HospitalInstallation::with([])
             ->where('id', '=', $id)
+            ->where('is_active', true)
             ->first();
     }
 
@@ -62,5 +64,14 @@ class HospitalInstallationRepository implements HospitalInstallationInterface
             'is_active' => $schema->isActive,
         ]);
         return $hospitalInstallation;
+    }
+
+    public function delete(string $id): void
+    {
+        $hospitalInstallation = $this->findByID($id);
+        if (!$hospitalInstallation) {
+            throw new DomainException("Hospital installation not found.", 404);
+        }
+        $hospitalInstallation->delete();
     }
 }
