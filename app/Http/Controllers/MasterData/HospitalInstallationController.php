@@ -36,11 +36,9 @@ class HospitalInstallationController extends Controller
     public function create(HospitalInstallationRequest $request)
     {
         $schema = $request->toSchema();
-        $hospitalInstallation = $this->service->create($schema);
+        $this->service->create($schema);
         return APIResponse::success(
-            [
-                'id' => $hospitalInstallation->id,
-            ],
+            null,
             "successfully created hospital installation",
             201
         );

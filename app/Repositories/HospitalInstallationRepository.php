@@ -39,7 +39,6 @@ class HospitalInstallationRepository implements HospitalInstallationInterface
     {
         return HospitalInstallation::with([])
             ->where('id', '=', $id)
-            ->where('is_active', true)
             ->first();
     }
 
