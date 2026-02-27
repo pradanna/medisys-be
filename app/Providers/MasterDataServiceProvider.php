@@ -11,6 +11,7 @@ class MasterDataServiceProvider extends ServiceProvider
         \App\Interfaces\HospitalInstallationInterface::class => \App\Repositories\HospitalInstallationRepository::class,
         \App\Interfaces\HospitalUnitInterface::class => \App\Repositories\HospitalUnitRepository::class,
         \App\Interfaces\ServiceClassInterface::class => \App\Repositories\ServiceClassRepository::class,
+        \App\Interfaces\ServiceClassTariffInterface::class => \App\Repositories\ServiceClassTariffRepository::class,
     ];
     /**
      * Register services.
