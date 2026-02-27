@@ -36,5 +36,13 @@ Route::group(['prefix' => 'v1'], function () {
             Route::put('/{id}', [App\Http\Controllers\MasterData\ServiceClassController::class, 'update']);
             Route::delete('/{id}', [App\Http\Controllers\MasterData\ServiceClassController::class, 'delete']);
         });
+
+        Route::group(['prefix' => 'service-class-tariff'], function () {
+            Route::get('/', [App\Http\Controllers\MasterData\ServiceClassTariffController::class, 'find']);
+            Route::get('/{id}', [App\Http\Controllers\MasterData\ServiceClassTariffController::class, 'findByID']);
+            Route::post('/', [App\Http\Controllers\MasterData\ServiceClassTariffController::class, 'create']);
+            Route::put('/{id}', [App\Http\Controllers\MasterData\ServiceClassTariffController::class, 'update']);
+            Route::delete('/{id}', [App\Http\Controllers\MasterData\ServiceClassTariffController::class, 'delete']);
+        });
     });
 });
